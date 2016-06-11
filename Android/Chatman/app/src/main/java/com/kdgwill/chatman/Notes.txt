@@ -1,0 +1,135 @@
+Non-public, non-static field names start with m.
+Static field names start with s.
+Other fields start with a lower case letter.
+Public static final fields (constants) are ALL_CAPS_WITH_UNDERSCORES.
+
+Bluetooth
+
+Ideally
+Range 50 meters = 164.042 feet
+Transfer Rate
+1 Mbit/s
+50-99% less power than Bluetooth Classic
+
+Floors and Walls means range reduced
+Typically beacon ever 20-30 feet as singles range from 50-250 feet
+
+apple limits UUID the iPhone can monitor to 20
+
+can determine range
+
+Are you sending "write without response" commands? You can send 4 packets per connection event this
+ way. Using you previous 20ms connection interval, you would be sending 4 packets with 20 bytes
+ every 0.02 seconds. Putting that together: 4*20/0.02 = 4000 bytes per second easy.
+
+I highly doubt you are getting corrupt data. The link layer adds a CRC and a 2 bits of
+"next expected" to BLE packets to ensure A) all the bits are received correctly and b) packets were
+not sent out of order. The TI stack and iOS control the link layer so I doubt you've botched that.
+
+http://www.elecfreaks.com/7906.html
+
+
+package com.kdgwill.chatman;
+
+
+import android.bluetooth.BluetoothGatt;
+import android.bluetooth.BluetoothGattCallback;
+import android.bluetooth.le.AdvertiseCallback;
+import android.bluetooth.le.AdvertiseData;
+import android.bluetooth.le.AdvertiseSettings;
+import android.bluetooth.le.BluetoothLeAdvertiser;
+import android.bluetooth.le.BluetoothLeScanner;
+import android.bluetooth.le.ScanCallback;
+import android.bluetooth.le.ScanFilter;
+import android.bluetooth.le.ScanResult;
+import android.bluetooth.le.ScanSettings;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.ParcelUuid;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
+
+public class MainActivity extends EnableBluetoothActivity {
+
+    private BluetoothControllerFragment bcf;
+
+    private TextView mText;
+    private BluetoothLeScanner mBluetoothLeScanner;
+    private ParcelUuid ChatMan_UUID;//The device type Identifier
+    private ParcelUuid MAC_UUID;  //The unique device identifier
+//    private BluetoothLeAdvertiser advertiser;
+
+    private Handler mHandler = new Handler();
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        getSupportFragmentManager()
+        //First see if it is already created
+         bcf = (BluetoothControllerFragment)getFragmentManager()
+                 .findFragmentByTag("bluetoothController");
+//
+//        if(BluetoothControllerFragment == null) {
+//            bc = new BluetoothControllerFragment();
+//            getFragmentManager().beginTransaction()
+//                    .add(bc, "bluetoothController").commit();
+//        }
+
+        mText = (TextView) findViewById( R.id.textBox );
+        mBluetoothLeScanner = bluetoothAdapter.getBluetoothLeScanner();
+        //Set UUIDs
+        ChatMan_UUID = new ParcelUuid(UUID.fromString(getString(R.string.UUID_CHATMAN)));
+        MAC_UUID = createMACUUID();
+    }
+
+
+
+
+
+    private BluetoothGattCallback mGattCallback = new BluetoothGattCallback(){
+        @Override
+        public void onConnectionStateChange(BluetoothGatt gatt, int status,
+                                            int newState) {
+            if(BluetoothGatt.STATE_CONNECTED==newState) {
+                Log.d(MainActivity.this.msg, "GATT CONNECTION ESTABLISHED");
+            }else if(BluetoothGatt.STATE_DISCONNECTED==newState){
+                Log.d(MainActivity.this.msg, "GATT CONNECTION DROPPED");
+            }
+        }
+    };
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

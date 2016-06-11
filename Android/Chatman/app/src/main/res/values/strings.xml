@@ -1,0 +1,34 @@
+<resources>
+    <string name="app_name">Chatman</string>
+    <string name="no_ble_support">
+        Unfortunately this device does not have support for Bluetooth 4.0 which is a critical
+        hardware requirement and operations cannot persist without it.
+    </string>
+    <string name="no_extended_ble_support">
+        Unfortunately this device does not have extended Bluetooth LE Support.
+        While the software features necessary for advtecertising as a peripheral are available from
+        Lollipop on, manufacturers must also use a Bluetooth chip-set that can support advertisement.
+        This is a critical hardware requirement and operations cannot persist without it.
+    </string>
+    <string name="enable_bluetooth">This Application uses Bluetooth Low Energy in order to pass
+        messages and organize data transfer. Please Be aware that Bluetooth LE has much lower energy
+        usage than classic Bluetooth or Wi-Fi and as such will not have as noticeable of an impact
+        as the latter.
+    </string>
+
+    <!--Bluetooth requires a certain format for UUIDs associated with Services.-->
+    <!--The official specification can be found here:-->
+    <!--{@link https://www.bluetooth.org/en-us/specification/assigned-numbers/service-discovery}-->
+    <!--A List of Assigned Numbers can be found here:-->
+    <!--{@link https://www.bluetooth.com/specifications/assigned-numbers}-->
+    <!--Although UUIDs are 128 bits in length, the assigned numbers for Bluetooth LE -->
+    <!--are listed as 16 bit hex values because the lower 96 bits are consistent across a -->
+    <!--class of attributes. For example, all BLE characteristic UUIDs are of the form:-->
+    <!--0000XXXX-0000-1000-8000-00805f9b34fb-->
+    <!--UUIDs generated using uuidgen program in terminal.-->
+    <!--Each UUID indicated platform used to send the message-->
+    <!--This UUID used in advertising data section it's format must be standard for cross-platform support-->
+    <!--<string name="UUID_DATA">0000b81d-0000-1000-8000-00805F9B34FB</string>-->
+    <string name="UUID_CHATMAN">5C56E322-A592-4CAA-B9BF-BFB222B2FD9E</string>
+
+</resources>
